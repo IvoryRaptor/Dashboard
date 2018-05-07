@@ -1,3 +1,3 @@
-export default function (loader) {
-	loader(require('./kubernetes'))
-}
+export default [
+	require('./kubernetes'),
+]

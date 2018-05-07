@@ -8,15 +8,16 @@ const goshawk = new Goshawk({
   history: createHistory(),
   onError: (error) => {
     message.error(error.message)
-  } })
+  } });
 
 
 goshawk.templates.add(require('./templates'))
 
-anglers(goshawk.loader)
+anglers(goshawk)
+// goshawk.angler()
 
 goshawk.start(require('./frame/router'), '#root')
 
-goshawk.open('ws://localhost:8080/mqtt')
+// goshawk.open('ws://localhost:8080/mqtt')
 
 export default goshawk

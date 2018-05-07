@@ -8,14 +8,14 @@ const svgSpriteDirs = [
 ]
 
 const dirList = fs.readdirSync('src/anglers/');
-let text = 'export default function (loader) {\n'
+let text = 'export default [\n'
 
 dirList.forEach(function(item){
   if(fs.statSync('src/anglers/' + item).isDirectory()){
-    text += `\tloader(require('./${item}'))\n`
+    text += `\trequire('./${item}'),\n`
   }
 });
-text+='}'
+text+=']'
 
 fs.writeFile('./src/anglers/index.js', text,  function(err) {
   if (err) {
