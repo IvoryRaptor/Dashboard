@@ -1,0 +1,3 @@
+export default function (loader) {	loader(require('./anglers/index.js'))
+	loader(require('./anglers/kubernetes'))
+}
