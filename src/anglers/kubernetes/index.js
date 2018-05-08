@@ -1,6 +1,9 @@
+import locale from './locale'
+import pages from './pages'
+import resources from './resources'
 
 export default {
-    locale: import ('./locale/'),
-    pages: import('./pages/'),
-    resources: import('./resources/'),
+    locale,
+    pages,
+    resources,
 }

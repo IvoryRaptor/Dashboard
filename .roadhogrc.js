@@ -12,7 +12,7 @@ let text = 'export default [\n'
 
 dirList.forEach(function(item){
   if(fs.statSync('src/anglers/' + item).isDirectory()){
-    text += `\trequire('./${item}'),\n`
+    text += `\trequire('./${item}/'),\n`
   }
 });
 text+=']'

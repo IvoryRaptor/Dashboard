@@ -1,5 +1,5 @@
-import config_map from './config_map'
+// import config_map from './config_map'
 
 export default {
-  config_map
+  // config_map
 }

@@ -127,10 +127,9 @@ class Goshawk {
     this.dva.model(require('./models/ws'))
   }
 
-  angler({locale, pages, resources}){
-    console.log(locale)
-    console.log(pages)
-    console.log(resources)
+  angler(aa){
+    console.log('123');
+    console.log(aa)
   }
 
   loader (loader) {
