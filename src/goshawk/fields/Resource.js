@@ -16,23 +16,23 @@ class Resource extends Template {
   }
 
   mapField (obj) {
-    let self = this
-    let res = {}
-    if (obj.fields) {
-      for (let name of Object.keys(obj.fields)) {
-        const fieldParam = obj.fields[name]
-        fieldParam.key = name
-        const field = window.goshawk.templates.create(fieldParam.template, fieldParam)
-        if (!field){
-          console.log(obj, this)
-        }
-        field.resource = self
-        field.fields = this.mapField(field)
-        res[name] = field
-      }
-      return res
-    }
-    return null
+    // let self = this
+    // let res = {}
+    // if (obj.fields) {
+    //   for (let name of Object.keys(obj.fields)) {
+    //     const fieldParam = obj.fields[name]
+    //     fieldParam.key = name
+    //     const field = window.goshawk.templates.create(fieldParam.template, fieldParam)
+    //     if (!field){
+    //       console.log(obj, this)
+    //     }
+    //     field.resource = self
+    //     field.fields = this.mapField(field)
+    //     res[name] = field
+    //   }
+    //   return res
+    // }
+    // return null
   }
 
   getLocale () {

@@ -13,11 +13,12 @@ const goshawk = new Goshawk({
 
 // goshawk.templates.add(require('./templates'))
 anglers.map(item=> {
-  const {l18n, pages, resources} = item;
+  const {l18n, models, pages, resources} = item;
   goshawk.l18n = _.merge(l18n, goshawk.l18n);
   for(let key in resources){
     goshawk.resources[key] = resources[key]
   }
+  console.log(goshawk.l18n.cn.config_map.title)
 
 });
 // anglers.map(item=>{

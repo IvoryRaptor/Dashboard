@@ -38,27 +38,27 @@ fs.readdirSync('src/anglers/').forEach(function(angler){
     text += '  l18n:{\n'
     fs.readdirSync(angler_path+'/l18n').forEach(function(l18n) {
       l18n = path.basename(l18n,'.js')
-      text += `    ${l18n}: import('./${angler}/l18n/${l18n}'),`
+      text += `    ${l18n}: require('./${angler}/l18n/${l18n}'),`
     })
     text += '  },\n'
     text += '  models:{\n'
     fs.readdirSync(angler_path+'/models').forEach(function(model) {
       model = path.basename(model,'.js')
-      text += `    ${model}: import('./${angler}/models/${model}'),\n`
+      text += `    ${model}: require('./${angler}/models/${model}'),\n`
     })
     text += '  },\n'
     text += '  pages:['
     fs.readdirSync(angler_path+'/pages').forEach(function(page) {
       text += `{\n`
       text += `        path: './${angler}/${page}',\n`
-      text += `        component: ()=> import('./${angler}/pages/${page}'),\n`
+      text += `        component: ()=> require('./${angler}/pages/${page}'),\n`
       text += `    },`
     })
     text += '  ],\n'
     text += '  resources:{\n'
     fs.readdirSync(angler_path+'/resources').forEach(function(resource) {
       resource = path.basename(resource,'.js')
-      text += `    ${resource}: import('./${angler}/resources/${resource}'),\n`
+      text += `    ${resource}: require('./${angler}/resources/${resource}'),\n`
     })
     text += '  }\n'
     text += '  },\n'
