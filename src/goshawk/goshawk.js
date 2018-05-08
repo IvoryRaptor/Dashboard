@@ -54,6 +54,7 @@ function sign (params,  deviceSecret, signMethod) {
 class Goshawk {
   constructor (exports) {
     window.goshawk = this
+    this.l18n = {}
     this.dva = dva({
       ...createLoading({
         effects: true,
@@ -125,11 +126,6 @@ class Goshawk {
     this.dva.model(require('./models/resource'))
     this.dva.model(require('./models/source'))
     this.dva.model(require('./models/ws'))
-  }
-
-  angler(aa){
-    console.log('123');
-    console.log(aa)
   }
 
   loader (loader) {

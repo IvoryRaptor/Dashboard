@@ -6,15 +6,65 @@ const svgSpriteDirs = [
   path.resolve(__dirname, 'src/svg/'),
   require.resolve('antd').replace(/index\.js$/, '')
 ]
-
-const dirList = fs.readdirSync('src/anglers/');
-let text = 'export default [\n'
-
-dirList.forEach(function(item){
-  if(fs.statSync('src/anglers/' + item).isDirectory()){
-    text += `\trequire('./${item}/'),\n`
+// export default [
+//   {
+//     l18n: {
+//       cn: import('./kubernetes/l18n/cn')
+//     },
+//     models: {
+//       config_map: import('./kubernetes/models/config_map'),
+//       images: import('./kubernetes/models/images'),
+//       namespace: import('./kubernetes/models/namespace'),
+//       pod: import('./kubernetes/models/pod'),
+//       service: import('./kubernetes/models/service'),
+//     },
+//     pages: [{
+//       path: '/kubernetes/config_map',
+//       component: () => import('./kubernetes/pages/config_map/')
+//     }, {
+//       path: '/kubernetes/images',
+//       component: () => import('./kubernetes/pages/images/')
+//     }],
+//     resources: {
+//       config_map: import('./kubernetes/resources/config_map'),
+//     }
+//   },
+// ]
+let text = 'export default ['
+fs.readdirSync('src/anglers/').forEach(function(angler){
+  const angler_path = 'src/anglers/' + angler
+  if(fs.statSync(angler_path).isDirectory()){
+    text += '{\n'
+    text += '  l18n:{\n'
+    fs.readdirSync(angler_path+'/l18n').forEach(function(l18n) {
+      l18n = path.basename(l18n,'.js')
+      text += `    ${l18n}: import('./${angler}/l18n/${l18n}'),`
+    })
+    text += '  },\n'
+    text += '  models:{\n'
+    fs.readdirSync(angler_path+'/models').forEach(function(model) {
+      model = path.basename(model,'.js')
+      text += `    ${model}: import('./${angler}/models/${model}'),\n`
+    })
+    text += '  },\n'
+    text += '  pages:['
+    fs.readdirSync(angler_path+'/pages').forEach(function(page) {
+      text += `{\n`
+      text += `        path: './${angler}/${page}',\n`
+      text += `        component: ()=> import('./${angler}/pages/${page}'),\n`
+      text += `    },`
+    })
+    text += '  ],\n'
+    text += '  resources:{\n'
+    fs.readdirSync(angler_path+'/resources').forEach(function(resource) {
+      resource = path.basename(resource,'.js')
+      text += `    ${resource}: import('./${angler}/resources/${resource}'),\n`
+    })
+    text += '  }\n'
+    text += '  },\n'
   }
 });
+
 text+=']'
 
 fs.writeFile('./src/anglers/index.js', text,  function(err) {
