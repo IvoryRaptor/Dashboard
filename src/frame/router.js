@@ -2,14 +2,14 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { Switch, Route, Redirect, routerRedux } from 'dva/router'
 import dynamic from 'dva/dynamic'
-import App from './routes/app/index'
+import App from './pages/app'
 
 const { ConnectedRouter } = routerRedux
 
 const Routers = function ({ history, app }, routes) {
   const error = dynamic({
     app,
-    component: () => import('./routes/error/index'),
+    component: () => import('./pages/error/index'),
   })
   return (
     <ConnectedRouter history={history}>
