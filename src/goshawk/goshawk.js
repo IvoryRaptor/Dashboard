@@ -1,7 +1,7 @@
 import util from 'util'
 import dva from 'dva'
 import createLoading from 'dva-loading'
-import ModelPluses from './models'
+import ModelPluses from '../frame/models'
 import MQTT from 'mqtt'
 import CryptoJS from "crypto-js"
 
@@ -65,7 +65,7 @@ class Goshawk {
     this.model = new ModelPluses(this.dva)
     this.resources = {}
     this.templates = require('./templates').default
-    this.templates.add(require('./fields/'))
+    this.templates.add(require('../templates/fields/'))
 
 
     this.pages = {}
@@ -119,13 +119,13 @@ class Goshawk {
         }
       },
     })
-    this.dva.model(require('./models/app'))
-    this.dva.model(require('./models/menu'))
-    this.dva.model(require('./models/locale'))
-    this.dva.model(require('./models/page'))
-    this.dva.model(require('./models/resource'))
-    this.dva.model(require('./models/source'))
-    this.dva.model(require('./models/ws'))
+    this.dva.model(require('../frame/models/app'))
+    this.dva.model(require('../frame/models/menu'))
+    this.dva.model(require('../frame/models/locale'))
+    this.dva.model(require('../frame/models/page'))
+    this.dva.model(require('../frame/models/resource'))
+    this.dva.model(require('../frame/models/source'))
+    this.dva.model(require('../frame/models/ws'))
   }
 
   getSource (name) {

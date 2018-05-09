@@ -7,7 +7,7 @@ import NumberSourceField from './NumberSourceField'
 import PriceField from './PriceField'
 import ImageField from './ImageField'
 import DateField from './DateField'
-import Resource from './Resource'
+import Resource from '../Resource'
 import StringArrayField from './StringArrayField'
 import ObjectField from "./ObjectField"
 import ObjectSourceField from "./ObjectSourceField"

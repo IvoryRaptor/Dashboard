@@ -1,4 +1,4 @@
-import { Template } from '../templates'
+import { Template } from '../goshawk/templates'
 
 class Resource extends Template {
   constructor (obj) {

@@ -1,5 +1,5 @@
 import { Form, Input, Select, Switch, Radio, Checkbox, Modal } from 'antd'
-import { Template } from '../templates'
+import { Template } from '../../goshawk/templates'
 
 const formItemLayout = {
   labelCol: {
