@@ -9,7 +9,7 @@ module.exports = (webpackConfig, env) => {
 
   if (production) {
     if (webpackConfig.module) {
-    // ClassnameHash
+      // ClassnameHash
       webpackConfig.module.rules.map((item) => {
         if (String(item.test) === '/\\.less$/' || String(item.test) === '/\\.css/') {
           item.use.filter(iitem => iitem.loader === 'css')[0].options.localIdentName = '[hash:base64:5]'
@@ -46,6 +46,8 @@ module.exports = (webpackConfig, env) => {
   // Alias
   webpackConfig.resolve.alias = {
     components: `${__dirname}/src/components`,
+    templates: `${__dirname}/src/templates`,
+    goshawk:`${__dirname}/src/goshawk`,
     utils: `${__dirname}/src/utils`,
     config: `${__dirname}/src/utils/config`,
     enums: `${__dirname}/src/utils/enums`,

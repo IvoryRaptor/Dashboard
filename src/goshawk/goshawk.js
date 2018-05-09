@@ -128,10 +128,6 @@ class Goshawk {
     this.dva.model(require('./models/ws'))
   }
 
-  loader (loader) {
-    loader(this)
-  }
-
   getSource (name) {
     return this.dva._store.getState().source[name]
   }

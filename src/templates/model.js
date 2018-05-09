@@ -1,7 +1,10 @@
-export default (item) => {
-  const namespace = item.key
+export default (namespace, plus) => {
+  if (!plus){
+    plus = {}
+  }
+  const {state,effects,reducers} = plus
   return {
-    namespace: item.key,
+    namespace: namespace,
     state: {
       list: [],
       listLoading: false,
@@ -22,9 +25,10 @@ export default (item) => {
       sorter: {},
       filter: 'all',
       lastquery: {},
+      ...state
     },
     effects: {
-      * fetch (payload, { select, put }) {
+      * fetch(payload, {select, put}) {
         const sendpayload = yield select(state => state[namespace].lastquery)
         yield put({
           type: `${namespace}/$list`,
@@ -33,7 +37,7 @@ export default (item) => {
         })
       },
 
-      * findOne ({ payload }, { put }) {
+      * findOne({payload}, {put}) {
         yield put({
           type: `${namespace}/$get`,
           payload: {
@@ -43,7 +47,7 @@ export default (item) => {
         })
       },
 
-      * _get ({ payload = {} }, { put }) {
+      * _get({payload = {}}, {put}) {
         yield put({
           type: 'setValue',
           payload: {
@@ -52,10 +56,10 @@ export default (item) => {
         })
       },
 
-      * _list ({ payload = {} }, { put }) {
+      * _list({payload = {}}, {put}) {
         yield put({
           type: 'setValue',
-          payload: { lastquery: payload.query },
+          payload: {lastquery: payload.query},
         })
         yield put({
           type: 'querySuccess',
@@ -71,10 +75,10 @@ export default (item) => {
           },
         })
       },
-      * _delete (payload, { put }) {
-        yield yield put({ type: 'fetch' })
+      * _delete(payload, {put}) {
+        yield yield put({type: 'fetch'})
       },
-      * updateItem ({ payload }, { put }) {
+      * updateItem({payload}, {put}) {
         yield put({
           type: `${namespace}/$save`,
           payload,
@@ -82,24 +86,25 @@ export default (item) => {
         })
       },
 
-      * _save ({ error }, { put }) {
+      * _save({error}, {put}) {
         if (!error) {
-          yield put({ type: 'hideModal' })
-          yield put({ type: 'fetch' })
+          yield put({type: 'hideModal'})
+          yield put({type: 'fetch'})
         } else {
           throw error.message || '网络错误'
         }
       },
+      ...effects
     },
     reducers: {
-      setValue (state, { payload }) {
+      setValue(state, {payload}) {
         return {
           ...state,
           ...payload,
         }
       },
-      querySuccess (state, { payload }) {
-        const { list, pagination, ...settings } = payload
+      querySuccess(state, {payload}) {
+        const {list, pagination, ...settings} = payload
         return {
           ...state,
           list,
@@ -111,13 +116,14 @@ export default (item) => {
         }
       },
 
-      showModal (state, { payload }) {
-        return { ...state, ...payload, modalVisible: true }
+      showModal(state, {payload}) {
+        return {...state, ...payload, modalVisible: true}
       },
 
-      hideModal (state) {
-        return { ...state, modalVisible: false }
+      hideModal(state) {
+        return {...state, modalVisible: false}
       },
+      ...reducers
     },
   }
 }
