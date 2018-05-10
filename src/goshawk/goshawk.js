@@ -52,6 +52,8 @@ function sign (params,  deviceSecret, signMethod) {
 
 class Goshawk {
   constructor (exports) {
+    this.url = exports.url
+    this.productKey = exports.productKey
     window.goshawk = this
     this.l18n = {}
     this.dva = dva({
@@ -142,30 +144,28 @@ class Goshawk {
     this.dispatch = this.dva._store.dispatch
   }
 
-  open (url) {
+  connect (deviceName, secret) {
     const clientId = "123123123123";
-    const deviceName = "00001";
-    const productKey = "a1A325fYEJX";
-    const secret = "P6Q6mVae8al2YXpIdsyJIooBpWSP9827";
+    // const deviceName = "00001";
+    // const productKey = "a1A325fYEJX";
+    // const secret = "P6Q6mVae8al2YXpIdsyJIooBpWSP9827";
     const t = "123455"
-    const client = MQTT.connect(url, {
+    const client = MQTT.connect(this.url, {
       clientId: clientId + '|securemode=2,signmethod=hmacsha1,timestamp=' + t + '|',
-      username: deviceName + "&" + productKey,
+      username: deviceName + "&" + this.productKey,
       password: sign({
-        productKey: productKey,
+        productKey: this.productKey,
         deviceName: deviceName,
         clientId: clientId,
         timestamp: t
       }, secret, "hmacsha1")
     })
 
-    // this.mqtt = client
-
-    // const client  = MQTT.connect(url)
     client.on('connect', function () {
-      client.publish(`/${productKey}/${deviceName}/test/get`, '{"payload":{"id":"123456"}}')
+      console.log(123)
+      // client.publish(`/${this.productKey}/${this.deviceName}/test/get`, '{"payload":{"id":"123456"}}')
     })
-    //
+
     client.on('message', function (topic, message) {
       let text = new TextDecoder("utf-8").decode(message)
       console.log(topic,JSON.parse(text))
@@ -176,52 +176,6 @@ class Goshawk {
     client.on('close',function () {
       console.log('close')
     })
-    //
-    // const socket = new WebSocket(url)
-    // this.socket = socket
-    // const self = this
-    // socket.onopen = function () {
-    //   self.dispatch({ type: 'ws/open', payload: { socket } })
-    //   self.cacheMsg.map((msg) => {
-    //     socket.send(JSON.stringify(msg))
-    //   })
-    //   this.cacheMsg = []
-    //   socket.onmessage = (message) => {
-    //     let msg = JsonParse(message.data)
-    //     const type = `${msg.resource}/${msg.action}`
-    //
-    //     if (msg.callback) {
-    //       const func = self.callbacks[msg.callback]
-    //       if (func) {
-    //         func(msg)
-    //         delete self.callbacks[msg.callback]
-    //       }
-    //       return
-    //     }
-    //
-    //     // 设置资源
-    //     if (msg.action === '_all') {
-    //       let tmp = {}
-    //       if (msg.payload) { tmp[msg.resource] = msg.payload.data }
-    //       self.dispatch({
-    //         type: 'source/setValue',
-    //         payload: tmp,
-    //       })
-    //     }
-    //     if (self.callback[type]) {
-    //       self.dispatch(self.callback[type])
-    //       delete self.callback[type]
-    //     }
-    //     self.dispatch({
-    //       type,
-    //       payload: msg.payload,
-    //       error: msg.error,
-    //     })
-    //   }
-    // }
-    // socket.onclose = function () {
-    //   self.dispatch({ type: 'ws/close', payload: { socket } })
-    // }
   }
 }
 

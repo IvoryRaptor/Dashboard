@@ -6,7 +6,9 @@ import anglers from './anglers/'
 import frame from './frame/'
 
 const goshawk = new Goshawk({
+  url:'ws://localhost:8080/mqtt',
   history: createHistory(),
+  productKey: 'a1A325fYEJX',
   onError: (error) => {
     message.error(error.message)
   } });
@@ -28,7 +30,5 @@ anglers.map(item=> {
 });
 
 goshawk.start(require('./frame/router'), '#root')
-
-// goshawk.open('ws://localhost:8080/mqtt')
 
 export default goshawk
