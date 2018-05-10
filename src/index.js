@@ -3,6 +3,7 @@ import createHistory from 'history/createBrowserHistory'
 import 'babel-polyfill'
 import Goshawk from './goshawk'
 import anglers from './anglers/'
+import frame from './frame/'
 
 const goshawk = new Goshawk({
   history: createHistory(),
@@ -10,6 +11,7 @@ const goshawk = new Goshawk({
     message.error(error.message)
   } });
 
+anglers.push(frame)
 
 anglers.map(item=> {
   const {l18n, models, pages, resources} = item;

@@ -1,7 +1,6 @@
 import util from 'util'
 import dva from 'dva'
 import createLoading from 'dva-loading'
-import ModelPluses from '../frame/models'
 import MQTT from 'mqtt'
 import CryptoJS from "crypto-js"
 
@@ -62,12 +61,7 @@ class Goshawk {
       ...exports,
     })
     this.callbacks = {}
-    this.model = new ModelPluses(this.dva)
     this.resources = {}
-    this.templates = require('./templates').default
-    this.templates.add(require('../templates/fields/'))
-
-
     this.pages = {}
     this.cacheMsg = []
     this.routers = []
@@ -119,13 +113,6 @@ class Goshawk {
         }
       },
     })
-    this.dva.model(require('../frame/models/app'))
-    this.dva.model(require('../frame/models/menu'))
-    this.dva.model(require('../frame/models/locale'))
-    this.dva.model(require('../frame/models/page'))
-    this.dva.model(require('../frame/models/resource'))
-    this.dva.model(require('../frame/models/source'))
-    this.dva.model(require('../frame/models/ws'))
   }
 
   getSource (name) {
@@ -133,13 +120,12 @@ class Goshawk {
   }
 
   getLocale (path) {
+    let result = this.l18n.cn;
     const sp = path.split('/')
-    let result = this.dva._store.getState().locale.all
-    if (result) {
-      for (let i = 0; i < sp.length && result; i += 1) {
-        result = result[sp[i]]
-      }
+    for (let i = 0; i < sp.length && result; i += 1) {
+      result = result[sp[i]]
     }
+    console.log(path, result)
     return result
   }
 
