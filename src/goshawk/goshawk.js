@@ -146,9 +146,6 @@ class Goshawk {
 
   connect (deviceName, secret) {
     const clientId = "123123123123";
-    // const deviceName = "00001";
-    // const productKey = "a1A325fYEJX";
-    // const secret = "P6Q6mVae8al2YXpIdsyJIooBpWSP9827";
     const t = "123455"
     const client = MQTT.connect(this.url, {
       clientId: clientId + '|securemode=2,signmethod=hmacsha1,timestamp=' + t + '|',
@@ -160,9 +157,12 @@ class Goshawk {
         timestamp: t
       }, secret, "hmacsha1")
     })
-
+    const self = this
     client.on('connect', function () {
-      console.log(123)
+      self.dispatch({
+        type: `app/_login`,
+        payload: {},
+      })
       // client.publish(`/${this.productKey}/${this.deviceName}/test/get`, '{"payload":{"id":"123456"}}')
     })
 

@@ -6,6 +6,7 @@ export default {
     menu: require('./models/menu'),
     page: require('./models/page'),
     source: require('./models/source'),
+    task: require('./models/task'),
     ws: require('./models/ws'),
   },
   pages:[{

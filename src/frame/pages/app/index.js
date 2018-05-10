@@ -2,6 +2,7 @@
 import React from 'react'
 import NProgress from 'nprogress'
 import PropTypes from 'prop-types'
+import zh_CN from 'antd/lib/locale-provider/zh_CN'
 import pathToRegexp from 'path-to-regexp'
 import { connect } from 'dva'
 import { LocaleProvider, BackTop, Modal } from 'antd'
@@ -17,7 +18,7 @@ const { prefix, openPages } = config
 const { Header, Bread, Footer, Sider, styles } = Layout
 let lastHref
 
-const App = ({ children, dispatch, app, task, loading, location, locale, ws: { wsState, wsLoading } }) => {
+const App = ({ children, dispatch, app, task, loading, location, ws: { wsState, wsLoading } }) => {
   const { user, siderFold, darkTheme, isNavbar, isMenuInline, menuPopoverVisible, navOpenKeys, project } = app
   let { menu } = app
   if (menu) {
@@ -132,7 +133,7 @@ const App = ({ children, dispatch, app, task, loading, location, locale, ws: { w
         {iconFontJS && <script src={iconFontJS} />}
         {iconFontCSS && <link rel="stylesheet" href={iconFontCSS} />}
       </Helmet>
-      <LocaleProvider locale={locale.antd}>
+      <LocaleProvider locale={zh_CN}>
         <div className={classnames(styles.layout, { [styles.fold]: isNavbar ? false : siderFold }, { [styles.withnavbar]: isNavbar })}>
           {!isNavbar ? <aside className={classnames(styles.sider)}>
             {siderProps.menu.length === 0 ? null : <Sider {...siderProps} />}
@@ -166,4 +167,4 @@ App.propTypes = {
   ws: PropTypes.object,
 }
 
-export default withRouter(connect(({ app, loading, locale, ws, task }) => ({ app, loading, locale, ws, task }))(App))
+export default withRouter(connect(({ app, loading, ws, task }) => ({ app, loading, ws, task }))(App))
