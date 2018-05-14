@@ -7,5 +7,5 @@ export default {
       sign_in : "登录",
       cluster : "选择集群"
     },
-  }
+  },
 }

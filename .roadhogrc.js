@@ -50,7 +50,7 @@ fs.readdirSync('src/anglers/').forEach(function(angler){
     text += '  pages:['
     fs.readdirSync(angler_path+'/pages').forEach(function(page) {
       text += `{\n`
-      text += `        path: './${angler}/${page}',\n`
+      text += `        path: '/${angler}/${page}',\n`
       text += `        component: ()=> require('./${angler}/pages/${page}'),\n`
       text += `    },`
     })

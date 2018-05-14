@@ -136,6 +136,7 @@ class Goshawk {
 
   start(router, dom) {
     let g = this.routers
+    console.log(g)
     this.dva.router((obj) => {
       return router(obj, g)
     })

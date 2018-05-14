@@ -23,7 +23,7 @@ const App = ({ children, dispatch, app, task, loading, location, ws: { wsState, 
   let { menu } = app
   if (menu) {
     menu.map((x) => {
-      x.name = window.goshawk.getLocale(`menu/values/${x.key}`)
+      x.name = window.goshawk.getLocale(`menu/${x.key}`)
     })
     // menu = menu.map(x => Object.assign(x, locale.menu.find(y => y === x.key)))
   }
