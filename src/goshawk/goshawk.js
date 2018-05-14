@@ -83,11 +83,11 @@ class Goshawk {
                 sendObj.callback = `${Math.random()}`.substring(2)
                 this.callbacks[sendObj.callback] = action.callback
               }
-              if (this.socket && this.socket.readyState === 1) {
-                this.socket.send(JSON.stringify(sendObj))
-              } else {
-                this.cacheMsg.push(sendObj)
-              }
+              this.publish(
+                spAction[0].substr(0, spAction[0].length),
+                spAction[1],
+                {payload:action.payload}
+              )
               let newAction
               if (action.loading) {
                 newAction = {
@@ -127,7 +127,6 @@ class Goshawk {
     for (let i = 0; i < sp.length && result; i += 1) {
       result = result[sp[i]]
     }
-    console.log(path, result)
     return result
   }
 
@@ -143,7 +142,11 @@ class Goshawk {
     this.dva.start(dom)
     this.dispatch = this.dva._store.dispatch
   }
-
+  publish(resource, action, payload){
+    if (this.mqtt && this.mqtt.connected){
+      this.mqtt.publish(`/${this.productKey}/${this.deviceName}/${resource}/${action}`, JSON.stringify(payload))
+    }
+  }
   connect (deviceName, secret) {
     const clientId = "123123123123";
     const t = "123455"
@@ -157,23 +160,27 @@ class Goshawk {
         timestamp: t
       }, secret, "hmacsha1")
     })
-    const self = this
-    client.on('connect', function () {
-      self.dispatch({
+    client.on('connect',  ()=>{
+      this.deviceName = deviceName
+      this.dispatch({
         type: `app/_login`,
         payload: {},
-      })
-      // client.publish(`/${this.productKey}/${this.deviceName}/test/get`, '{"payload":{"id":"123456"}}')
+      });
+      this.mqtt = client
+
     })
 
-    client.on('message', function (topic, message) {
+    client.on('message', (topic, message)=> {
+      const sp = topic.split('/')
       let text = new TextDecoder("utf-8").decode(message)
-      console.log(topic,JSON.parse(text))
-      // message is Buffer
-      // console.log(message.toString())
-      // client.end()
+
+      this.dispatch({
+        type:`${sp[2]},${sp[3]}`,
+        payload:JSON.parse(text)
+      })
     })
-    client.on('close',function () {
+
+    client.on('close', ()=> {
       console.log('close')
     })
   }
