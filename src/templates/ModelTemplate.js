@@ -2,7 +2,7 @@ export default (namespace, plus) => {
   if (!plus){
     plus = {}
   }
-  const {state,effects,reducers} = plus
+  const {state,effects,reducers,subscriptions} = plus
   return {
     namespace: namespace,
     state: {
@@ -26,6 +26,9 @@ export default (namespace, plus) => {
       filter: 'all',
       lastquery: {},
       ...state
+    },
+    subscriptions:{
+      ...subscriptions
     },
     effects: {
       * fetch(payload, {select, put}) {
