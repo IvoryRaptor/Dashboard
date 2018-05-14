@@ -70,16 +70,16 @@ export default {
   },
   effects: {
     * _login ({ payload, error }, { put, select }) {
-      // const { locationQuery, locationPathname } = yield select(_ => _.app)
+      const { locationQuery, locationPathname } = yield select(_ => _.app)
       // if (!error) {
       //   const { from } = locationQuery
-      yield put({type: 'menu/$all', payload: {order: {order: 1}}})
+      // yield put({type: 'menu/$all', payload: {order: {order: 1}}})
       // yield put({type: 'setUser', payload})
-      yield put({type: 'task/$list', payload: {}})
+      // yield put({type: 'task/$list', payload: {}})
       //   if (from && from !== '/login') {
       //     yield put(routerRedux.push({ pathname: from }))
       //   } else {
-      //     yield put(routerRedux.push({ pathname: locationPathname === '/login' ? '/dashboard' : locationPathname }))
+          yield put(routerRedux.push({ pathname: locationPathname === '/login' ? '/dashboard' : locationPathname }))
       //   }
       // } else {
       //   yield put(routerRedux.push({
