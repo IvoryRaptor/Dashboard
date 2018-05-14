@@ -51,7 +51,7 @@ function sign (params,  deviceSecret, signMethod) {
 }
 
 class Goshawk {
-  constructor (exports) {
+  constructor(exports) {
     this.url = exports.url
     this.productKey = exports.productKey
     window.goshawk = this
@@ -86,7 +86,7 @@ class Goshawk {
               this.publish(
                 spAction[0].substr(0, spAction[0].length),
                 spAction[1],
-                {payload:action.payload}
+                {payload: action.payload}
               )
               let newAction
               if (action.loading) {
@@ -117,11 +117,11 @@ class Goshawk {
     })
   }
 
-  getSource (name) {
+  getSource(name) {
     return this.dva._store.getState().source[name]
   }
 
-  getLocale (path) {
+  getLocale(path) {
     let result = this.l18n.cn;
     const sp = path.split('/')
     for (let i = 0; i < sp.length && result; i += 1) {
@@ -130,11 +130,11 @@ class Goshawk {
     return result
   }
 
-  router (r) {
+  router(r) {
     this.routers.push(r)
   }
 
-  start (router, dom) {
+  start(router, dom) {
     let g = this.routers
     this.dva.router((obj) => {
       return router(obj, g)
@@ -142,12 +142,15 @@ class Goshawk {
     this.dva.start(dom)
     this.dispatch = this.dva._store.dispatch
   }
-  publish(resource, action, payload){
-    if (this.mqtt && this.mqtt.connected){
+
+  publish(resource, action, payload) {
+    console.log('out=>',resource, action, payload)
+    if (this.mqtt && this.mqtt.connected) {
       this.mqtt.publish(`/${this.productKey}/${this.deviceName}/${resource}/${action}`, JSON.stringify(payload))
     }
   }
-  connect (deviceName, secret) {
+
+  connect(deviceName, secret) {
     const clientId = "123123123123";
     const t = "123455"
     const client = MQTT.connect(this.url, {
@@ -160,7 +163,7 @@ class Goshawk {
         timestamp: t
       }, secret, "hmacsha1")
     })
-    client.on('connect',  ()=>{
+    client.on('connect', () => {
       this.deviceName = deviceName
       this.dispatch({
         type: `app/_login`,
@@ -170,17 +173,18 @@ class Goshawk {
 
     })
 
-    client.on('message', (topic, message)=> {
+    client.on('message', (topic, message) => {
       const sp = topic.split('/')
       let text = new TextDecoder("utf-8").decode(message)
-
-      this.dispatch({
-        type:`${sp[2]},${sp[3]}`,
-        payload:JSON.parse(text)
-      })
+      const packet = {
+        type: `${sp[2]}/${sp[3]}`,
+        ...JSON.parse(text)
+      }
+      console.log('in=>',packet)
+      this.dispatch(packet)
     })
 
-    client.on('close', ()=> {
+    client.on('close', () => {
       console.log('close')
     })
   }
