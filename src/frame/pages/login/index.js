@@ -5,6 +5,7 @@ import { Button, Row, Form, Input, Radio, Select, Icon } from 'antd'
 // import { config } from 'utils'
 import styles from './index.less'
 import goshawk from "../../../index";
+import Cookies from "js-cookie";
 // import Iconfont from '../../../../components/Iconfont/Iconfont'
 // import '../../../../svg/libratone_logo.svg'
 
@@ -28,8 +29,11 @@ const Login = ({
       if (errors) {
         return
       }
-      console.log(values)
-      window.goshawk.connect(values.loginid, values.password)
+      Cookies.remove('token')
+      window.goshawk.connect({
+        deviceName: values.loginid,
+        secret: values.password
+      })
       //goshawk.open()
       // dispatch({ type: 'app/$login', payload: values })
     })

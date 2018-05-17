@@ -145,33 +145,47 @@ class Goshawk {
   }
 
   publish(resource, action, payload) {
-    console.log('out=>',resource, action, payload)
+    console.log('out=>', resource, action, payload)
     if (this.mqtt && this.mqtt.connected) {
       this.mqtt.publish(`/${this.productKey}/${this.deviceName}/${resource}/${action}`, JSON.stringify(payload))
     }
   }
 
-  connect(deviceName, secret) {
-    const clientId = "123123123123";
-    const t = "123455"
-    const client = MQTT.connect(this.url, {
-      clientId: clientId + '|securemode=2,signmethod=hmacsha1,timestamp=' + t + '|',
-      username: deviceName + "&" + this.productKey,
-      password: sign({
-        productKey: this.productKey,
-        deviceName: deviceName,
-        clientId: clientId,
-        timestamp: t
-      }, secret, "hmacsha1")
-    })
+  connect(config) {
+    let {deviceName, secret, clientId} = config
+    let client = null
+    if (clientId) {
+      client = MQTT.connect(this.url, {
+        clientId: clientId
+      })
+    } else {
+      const t = "123455"
+      clientId = 'mqtt'
+      client = MQTT.connect(this.url, {
+        clientId: clientId + '|securemode=2,signmethod=hmacsha1,timestamp=' + t + '|',
+        username: deviceName + "&" + this.productKey,
+        password: sign({
+          productKey: this.productKey,
+          deviceName: deviceName,
+          clientId: clientId,
+          timestamp: t
+        }, secret, "hmacsha1")
+      })
+    }
+
     client.on('connect', () => {
+      console.log('connect complete');
       this.deviceName = deviceName
-      this.dispatch({
-        type: `app/_login`,
-        payload: {},
-      });
+      // this.dispatch({
+      //   type: `app/_login`,
+      //   payload: {},
+      // });
       this.mqtt = client
 
+    })
+
+    client.on('error',(msg)=>{
+      console.log(error,msg)
     })
 
     client.on('message', (topic, message) => {
@@ -181,7 +195,7 @@ class Goshawk {
         type: `${sp[2]}/${sp[3]}`,
         ...JSON.parse(text)
       }
-      console.log('in=>',packet)
+      console.log('in=>', packet)
       this.dispatch(packet)
     })
 
