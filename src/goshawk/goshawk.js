@@ -155,6 +155,7 @@ class Goshawk {
     let {deviceName, secret, clientId} = config
     let client = null
     if (clientId) {
+      console.log(clientId)
       client = MQTT.connect(this.url, {
         clientId: clientId
       })
@@ -185,7 +186,8 @@ class Goshawk {
     })
 
     client.on('error',(msg)=>{
-      console.log(error,msg)
+      // console.log('error',msg)
+      console.error(msg)
     })
 
     client.on('message', (topic, message) => {
