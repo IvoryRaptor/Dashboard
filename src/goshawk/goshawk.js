@@ -152,29 +152,23 @@ class Goshawk {
   }
 
   connect(config) {
-    let {deviceName, secret, clientId} = config
+    let {deviceName, secret} = config
     let client = null
-    if (clientId) {
-      console.log(clientId)
-      client = MQTT.connect(this.url, {
-        clientId: clientId
-      })
-    } else {
-      const t = "123455"
-      clientId = 'mqtt'
-      client = MQTT.connect(this.url, {
-        clientId: clientId + '|securemode=2,signmethod=hmacsha1,timestamp=' + t + '|',
-        username: deviceName + "&" + this.productKey,
-        password: sign({
-          productKey: this.productKey,
-          deviceName: deviceName,
-          clientId: clientId,
-          timestamp: t
-        }, secret, "hmacsha1")
-      })
-    }
+    const t = "123455"
+    const clientId = 'mqtt'
+    client = MQTT.connect(this.url, {
+      clientId: clientId + '|securemode=2,signmethod=hmacsha1,timestamp=' + t + '|',
+      username: deviceName + "&" + this.productKey,
+      password: sign({
+        productKey: this.productKey,
+        deviceName: deviceName,
+        clientId: clientId,
+        timestamp: t
+      }, secret, "hmacsha1")
+    })
 
     client.on('connect', () => {
+      client.subscribe('server/server01/cpu');
       console.log('connect complete');
       this.deviceName = deviceName
       // this.dispatch({

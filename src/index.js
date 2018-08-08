@@ -8,7 +8,7 @@ import frame from './frame/'
 const goshawk = new Goshawk({
   url:'ws://localhost:8080/mqtt',
   history: createHistory(),
-  productKey: 'a1A325fYEJX',
+  productKey: 't_matrix',
   onError: (error) => {
     message.error(error.message)
   } });

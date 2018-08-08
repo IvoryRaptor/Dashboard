@@ -55,7 +55,8 @@ export default {
       const token = Cookies.get('token')
       if (token){
         window.goshawk.connect({
-          clientId: token
+          deviceName: token,
+          secret: ''
         })
       }else{
         dispatch({ type: 'toLogin' })
